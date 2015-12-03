@@ -1,6 +1,6 @@
 {
   "name": "deku-lazy-load",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "main": "dist/index.js",
   "scripts": {
     "test": "npm run lint && babel-tape-runner test.js",
