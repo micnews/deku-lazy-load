@@ -11,15 +11,19 @@ export default {
       visible: false
     };
   },
-  render: function ({ props: { children, height, offset, width }, state: { visible } }) {
+  render: function ({ props: { children, offset, height, width }, state: { visible } }) {
+    if (visible) {
+      return (<div class="lazy-load">
+        {children}
+      </div>);
+    }
+
     // in-viewport doesn't work with a 0 sized element
     height = height || 1;
     width = width || 1;
-    const style = { 'min-width': width, 'min-height': height };
+    const style = { 'width': width, 'height': height };
 
-    return (<div class='lazy-load' style={style}>
-      {visible && children}
-    </div>);
+    return (<div class='lazy-load' style={style}></div>);
   },
   afterMount: function (component, el, setState) {
     // adding inViewport here since it doesn't work when rendering on the server

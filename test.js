@@ -14,23 +14,23 @@ test('LazyLoad initial state', function (t) {
   })));
 
   t.equal(html, tsml`
-    <div class="lazy-load" style="min-width: 1px; min-height: 1px">
+    <div class="lazy-load" style="width: 1px; height: 1px">
     </div>`);
   t.end();
 });
 
-test('LazyLoad load=false, height property', function (t) {
+test('LazyLoad visible=false, height & width property', function (t) {
   var html = renderString(tree(LazyLoad.render({
     props: {
-      width: 100,
-      height: 200,
+      'width': 100,
+      'height': 200,
       children: <div class='foo'></div>
     },
     state: {}
   })));
 
   t.equal(html, tsml`
-    <div class="lazy-load" style="min-width: 100px; min-height: 200px">
+    <div class="lazy-load" style="width: 100px; height: 200px">
     </div>`);
   t.end();
 });
@@ -45,7 +45,7 @@ test('LazyLoad visible=true', function (t) {
     }
   })));
   t.equal(html, tsml`
-    <div class="lazy-load" style="min-width: 1px; min-height: 1px">
+    <div class="lazy-load">
       <div class="foo"></div>
     </div>`);
 
