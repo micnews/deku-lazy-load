@@ -5,6 +5,8 @@ import element from 'magic-virtual-element';
 
 let inViewport;
 
+const watchers = {};
+
 export default {
   initialState (props) {
     return {
@@ -23,23 +25,24 @@ export default {
 
     return (<div class='lazy-load' style={style}></div>);
   },
-  afterMount (component, el, setState) {
+  afterMount ({ props: { offset }, id }, el, setState) {
     // adding inViewport here since it doesn't work when rendering on the server
     if (!inViewport) {
       inViewport = require('in-viewport');
     }
 
-    const { props: { offset: offset } } = component;
-    component.watcher = inViewport(el, { offset: Number(offset) || 0 }, () => {
+    watchers[id] = inViewport(el, { offset: Number(offset) || 0 }, () => {
+      watchers[id].dispose();
+      delete watchers[id];
       setState({
         visible: true
       });
-      component.watcher = null;
     });
   },
-  beforeUnmount (component) {
-    if (component.watcher) {
-      component.watcher.dispose();
+  beforeUnmount ({ id }) {
+    if (watchers[id]) {
+      watchers[id].dispose();
+      delete watchers[id];
     }
   }
 };
